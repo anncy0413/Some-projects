@@ -1,0 +1,45 @@
+using UnityEngine;
+public class Play : MonoBehaviour {
+    public Transform BlackLump1, Disapper1,StartLump1;
+    public static Transform BlackLump, WhiteLump,Disapper,StartLump;
+    public static int pos;
+    public static float Speed=7f;
+    public static bool Start1=false;
+    public static int Score,MaxScore;
+    GUIStyle fontStyle = new GUIStyle();
+    public AudioClip[] Au = new AudioClip[7];
+    public static AudioClip[] Au1 = new AudioClip[7];
+    public AudioClip End;
+    public static AudioClip End1;
+
+    void Start ( ) {
+        for(int i=0;i<7;i++) Au1[i] = Au[i];
+        End1 = End;
+        //PlayerPrefs.DeleteAll();
+        Start1 = false;
+        Score =MaxScore= 0;
+        MaxScore = PlayerPrefs.GetInt("MaxScore");
+        BlackLump = BlackLump1;
+        Disapper = Disapper1;
+        StartLump = StartLump1;
+        pos = Random.Range(0, 4);
+        Instantiate(BlackLump, new Vector2(-4.05f + pos * 2.7f, 16.8f), Quaternion.identity);
+        pos = Random.Range(0, 4);
+        Instantiate(BlackLump, new Vector2(-4.05f + pos * 2.7f, 12f), Quaternion.identity);
+        pos = Random.Range(0, 4);
+        Instantiate(BlackLump, new Vector2(-4.05f + pos * 2.7f, 7.2f), Quaternion.identity);
+        pos = Random.Range(0, 4);
+        Instantiate(BlackLump, new Vector2(-4.05f + pos * 2.7f, 2.4f), Quaternion.identity);
+        pos = Random.Range(0, 4);
+        Instantiate(StartLump, new Vector2(-4.05f + pos * 2.7f, -2.4f), Quaternion.identity);
+    }
+
+	void Update ( ) { }
+
+    void OnGUI() {
+        fontStyle.normal.textColor = new Color(0.5f, 0.5f, 0.5f);
+        fontStyle.fontSize = 150;
+        GUI.Label(new Rect(500, 40, 1080, 1920), "" + MaxScore, fontStyle);
+        GUI.Label(new Rect(500, 210, 1080, 1920), "" +Score, fontStyle);
+    }
+}
