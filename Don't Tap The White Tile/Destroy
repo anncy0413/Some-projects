@@ -1,0 +1,51 @@
+using UnityEngine.SceneManagement;
+using UnityEngine;
+using System.Threading;
+
+public class Destroy : MonoBehaviour {
+    //public AudioClip[] Au= new AudioClip[7];
+    bool Create = true;
+    float x, y;
+    int[] Music ={
+        1,1,5,5,6,6,5,8,
+        4,4,3,3,2,2,1,8,
+        5,5,4,4,3,3,2,8,
+        5,5,4,4,3,3,2,8,
+        1,1,5,5,6,6,5,8,
+        4,4,3,3,2,2,1,8,8
+    };
+    
+    void Start() { }
+
+    void Update() {
+        Play.Speed = 7f* (1+Play.Score*0.01f);
+        if (Play.Start1) gameObject.transform.Translate(0, -Time.deltaTime *Play.Speed, 0);
+        if (gameObject.transform.position.y <= 16.8&&Create&&gameObject.transform.position.y>12) {
+            Play.pos = Random.Range(0, 4);
+            Instantiate(Play.BlackLump, new Vector2(-4.05f + Play.pos * 2.7f,gameObject.transform.position.y+4.8f), Quaternion.identity);
+            Create = false;
+        }
+        if (gameObject.transform.position.y <= -12) {
+            if (gameObject.name == "Clone") Destroy(gameObject);
+            else {
+                Play.Speed = 0;
+                SceneManager.LoadScene("Play");
+            }
+        }
+    }
+    void OnMouseDown() {
+        if (gameObject.name!= "Clone") {
+            if (Music[Play.Score % 49] - 1 != 7) AudioSource.PlayClipAtPoint(Play.Au1[Music[Play.Score%49]-1],transform.localPosition);
+            Play.Start1 = true;
+            x = gameObject.transform.position.x;
+            y = gameObject.transform.position.y;
+            Play.Score++;
+            if (Play.Score > Play.MaxScore) {
+                Play.MaxScore = Play.Score;
+                PlayerPrefs.SetInt("MaxScore", Play.MaxScore);
+            }
+            Destroy(gameObject);
+            Instantiate(Play.Disapper, new Vector2(x, y), Quaternion.identity);
+        }
+    }
+}
